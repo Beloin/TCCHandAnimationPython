@@ -34,7 +34,7 @@ def get_list(txtname):
 modelVerts = get_list(vertextxt)  # list of vertices
 modelFaces = get_list(facestxt)  # list of faces
 
-
+# TODO: How to move fingers?
 def drawfaces():
     glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)  # clears each frame
     glBegin(GL_TRIANGLES)  # drawing method
