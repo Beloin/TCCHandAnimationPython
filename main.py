@@ -44,6 +44,7 @@ def drawfaces():
             color += 1
             if color > 5:
                 color = 0
+            # color = 5
             glColor3fv(paints[color])  # adding one solid color
             glVertex3fv(modelVerts[int(eachvert)])  # rendering triangles
     glEnd()
