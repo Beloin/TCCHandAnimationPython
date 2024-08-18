@@ -71,6 +71,7 @@ glfw.set_window_size_callback(window, window_resize)
 glfw.make_context_current(window)
 
 # load here the 3d meshes
+# TODO: Add models load
 chibi_indices, chibi_buffer = ObjLoader.load_model("texture_test.obj")
 monkey_indices, monkey_buffer = ObjLoader.load_model("texture_test2.obj")
 
@@ -116,7 +117,7 @@ glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctyp
 glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctypes.c_void_p(20))
 glEnableVertexAttribArray(2)
 
-
+# TODO: Add textures here
 textures = glGenTextures(2)
 load_texture("texture_test.png", textures[0])
 load_texture("texture_test.png", textures[1])
@@ -127,6 +128,7 @@ glEnable(GL_DEPTH_TEST)
 glEnable(GL_BLEND)
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
+# TODO: Add transformation here
 projection = pyrr.matrix44.create_perspective_projection_matrix(45, 1280 / 720, 0.1, 100)
 chibi_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
 monkey_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
