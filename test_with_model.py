@@ -1,3 +1,4 @@
+
 import glfw
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
@@ -6,7 +7,7 @@ from TextureLoader import load_texture
 from ObjLoader import ObjLoader
 from typing import List
 
-from model import Model
+from model import Model, create_model
 
 vertex_src = """
 # version 330
@@ -137,28 +138,6 @@ def main():
     )
     glEnableVertexAttribArray(2)
 
-    # Monkey VAO
-    glBindVertexArray(VAO[1])
-    # Monkey Vertex Buffer Object
-    glBindBuffer(GL_ARRAY_BUFFER, VBO[1])
-    glBufferData(GL_ARRAY_BUFFER, monkey_buffer.nbytes, monkey_buffer, GL_STATIC_DRAW)
-
-    # monkey vertices
-    glEnableVertexAttribArray(0)
-    glVertexAttribPointer(
-        0, 3, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctypes.c_void_p(0)
-    )
-    # monkey textures
-    glEnableVertexAttribArray(1)
-    glVertexAttribPointer(
-        1, 2, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctypes.c_void_p(12)
-    )
-    # monkey normals
-    glVertexAttribPointer(
-        2, 3, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctypes.c_void_p(20)
-    )
-    glEnableVertexAttribArray(2)
-
     textures = glGenTextures(2)
     load_texture("texture_test.png", textures[0])
     load_texture("texture_test.png", textures[1])
@@ -192,11 +171,12 @@ def main():
     model_01 = Model(
         chibi_indices, chibi_buffer, textures[0], chibi_pos, VAO[0], VBO[0]
     )
-    model_02 = Model(
-        monkey_indices, monkey_buffer, textures[1], monkey_pos, VAO[1], VBO[1]
-    )
 
-    animate(window, model_loc, [model_01, model_02])
+    monkey_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
+    model_00 = create_model("texture_test.obj", "texture_test.png", monkey_pos)
+
+
+    animate(window, model_loc, [model_00])
     glfw.terminate()
 
 
