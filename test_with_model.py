@@ -105,42 +105,11 @@ def main():
 
     # make the context current
     glfw.make_context_current(window)
-    chibi_indices, chibi_buffer = ObjLoader.load_model("texture_test.obj")
-    monkey_indices, monkey_buffer = ObjLoader.load_model("texture_test2.obj")
 
     shader = compileProgram(
         compileShader(vertex_src, GL_VERTEX_SHADER),
         compileShader(fragment_src, GL_FRAGMENT_SHADER),
     )
-
-    VAO = glGenVertexArrays(2)
-    VBO = glGenBuffers(2)
-
-    # Chibi VAO
-    glBindVertexArray(VAO[0])
-    # Chibi Vertex Buffer Object
-    glBindBuffer(GL_ARRAY_BUFFER, VBO[0])
-    glBufferData(GL_ARRAY_BUFFER, chibi_buffer.nbytes, chibi_buffer, GL_STATIC_DRAW)
-
-    # chibi vertices
-    glEnableVertexAttribArray(0)
-    glVertexAttribPointer(
-        0, 3, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(0)
-    )
-    # chibi textures
-    glEnableVertexAttribArray(1)
-    glVertexAttribPointer(
-        1, 2, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(12)
-    )
-    # chibi normals
-    glVertexAttribPointer(
-        2, 3, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(20)
-    )
-    glEnableVertexAttribArray(2)
-
-    textures = glGenTextures(2)
-    load_texture("texture_test.png", textures[0])
-    load_texture("texture_test.png", textures[1])
 
     glUseProgram(shader)
     glClearColor(0, 0.1, 0.1, 1)
@@ -152,8 +121,6 @@ def main():
     projection = pyrr.matrix44.create_perspective_projection_matrix(
         45, 1280 / 720, 0.1, 100
     )
-    chibi_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
-    monkey_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
 
     # eye, target, up
     view = pyrr.matrix44.create_look_at(
@@ -168,15 +135,14 @@ def main():
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
     glUniformMatrix4fv(view_loc, 1, GL_FALSE, view)
 
-    model_01 = Model(
-        chibi_indices, chibi_buffer, textures[0], chibi_pos, VAO[0], VBO[0]
-    )
+    oopos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
+    o1pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
 
-    monkey_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
-    model_00 = create_model("texture_test.obj", "texture_test.png", monkey_pos)
+    model_00 = create_model("texture_test.obj", "texture_test.png", oopos)
+    model_01 = create_model("texture_test.obj", "texture_test.png", o1pos)
 
 
-    animate(window, model_loc, [model_00])
+    animate(window, model_loc, [model_00, model_01])
     glfw.terminate()
 
 
