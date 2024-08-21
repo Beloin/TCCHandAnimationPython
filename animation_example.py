@@ -5,9 +5,9 @@ from AnimateModel import Animate
 
 
 def configureAnimation():
-    o1pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
+    oopos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, 0, 0]))
     grip = Animation(
-        "./hand-animation/grip/hand_sub2_triang", "./texture_test.png", 60, o1pos, 2
+        "./hand-animation/grip/hand_sub2_triang", "./texture_test.png", 60, oopos, 2
     )
     return grip
 

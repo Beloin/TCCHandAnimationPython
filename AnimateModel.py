@@ -83,7 +83,6 @@ def animate(window, model_loc, animation: Animation):
     while not glfw.window_should_close(window):
         model = animation.get_current_model()
         animate_models(window, model_loc, [model])
-        print("Current time in ?", glfw.get_time())
         animation.tick(glfw.get_time()*1000)
 
 
