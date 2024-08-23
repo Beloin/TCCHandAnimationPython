@@ -1,8 +1,19 @@
+from abc import ABC, abstractmethod
 from model import Model, create_model
 import math
 
 
-class Animation:
+class TickModel(ABC):
+    @abstractmethod
+    def tick(self, time=0):
+        pass
+
+    @abstractmethod
+    def model(self) -> Model:
+        pass
+
+
+class Animation(TickModel):
     def __init__(
         self,
         fileprefix: str,
@@ -63,8 +74,14 @@ class Animation:
             index = self._frames - 1
         return self._models[index]
 
+    def model(self) -> Model:
+        return self.get_current_model()
+
     def reset(self):
         self._current_index = 0
         self._last_index = 0
         self._order = 1
+
+    def animation_p(self):
+        pass # TODO: retrieve animation percentage
 

@@ -1,4 +1,4 @@
-from Animation import Animation
+from Animation import Animation, TickModel
 import glfw
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
@@ -79,14 +79,14 @@ def animate_models(window, model_loc, models: List[Model]):
 
 
 # TODO: Remove mode_lod
-def animate(window, model_loc, animation: Animation):
+def animate(window, model_loc, animation: TickModel):
     while not glfw.window_should_close(window):
-        model = animation.get_current_model()
+        model = animation.model()
         animate_models(window, model_loc, [model])
         animation.tick(glfw.get_time()*1000)
 
 
-def Animate(conf_func: Callable[[], Animation]):
+def Animate(conf_func: Callable[[], TickModel]):
     # initializing glfw library
     if not glfw.init():
         raise Exception("glfw can not be initialized!")

@@ -27,5 +27,5 @@ def rest():
 
 
 if __name__ == "__main__":
-    # Animate(flexion)
+    Animate(flexion)
     Animate(rest)
