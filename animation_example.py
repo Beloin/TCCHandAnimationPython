@@ -18,7 +18,14 @@ def flexion():
     )
     return flexion
 
+def rest():
+    oopos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, 0, 0]))
+    rest = Animation(
+        "./hand-animation/rest/rest", "./models/Hand/base_texture.png", 1, oopos, 2
+    )
+    return rest
 
 
 if __name__ == "__main__":
-    Animate(flexion)
+    # Animate(flexion)
+    Animate(rest)

@@ -5,7 +5,7 @@ from OpenGL.GL.shaders import compileProgram, compileShader
 import pyrr
 from TextureLoader import load_texture
 from ObjLoader import ObjLoader
-from typing import List
+from typing import Callable, List
 
 from model import Model, create_model
 
@@ -86,7 +86,7 @@ def animate(window, model_loc, animation: Animation):
         animation.tick(glfw.get_time()*1000)
 
 
-def Animate(conf_func):
+def Animate(conf_func: Callable[[], Animation]):
     # initializing glfw library
     if not glfw.init():
         raise Exception("glfw can not be initialized!")

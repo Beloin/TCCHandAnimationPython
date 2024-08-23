@@ -62,3 +62,9 @@ class Animation:
         if self._order == -1 and index == 0:
             index = self._frames - 1
         return self._models[index]
+
+    def reset(self):
+        self._current_index = 0
+        self._last_index = 0
+        self._order = 1
+
