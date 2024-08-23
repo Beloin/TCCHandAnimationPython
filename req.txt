@@ -1,0 +1,10 @@
+glfw==2.7.0
+greenlet==3.0.3
+msgpack==1.0.8
+multipledispatch==1.0.0
+numpy==2.0.1
+pillow==10.4.0
+pygame==2.6.0
+pynvim==0.5.0
+PyOpenGL==3.1.7
+pyrr==0.10.3
