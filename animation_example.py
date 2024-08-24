@@ -44,7 +44,7 @@ def animation_control():
 
     return control
 
-def animation_thread(control):
+def animation_thread(control: AnimationControl):
     test = 0
     while True:
         sleep(10)
