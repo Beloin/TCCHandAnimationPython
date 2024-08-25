@@ -82,6 +82,5 @@ class Animation(TickModel):
         self._last_index = 0
         self._order = 1
 
-    def animation_p(self):
-        pass # TODO: retrieve animation percentage
-
+    def animation_percentage(self):
+        return ((self._current_index + 1) / self._frames) * 100

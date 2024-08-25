@@ -47,7 +47,7 @@ def animation_control():
 def animation_thread(control: AnimationControl):
     test = 0
     while True:
-        sleep(10)
+        sleep(5)
         test += 1
 
         if test >= 3:
