@@ -137,9 +137,6 @@ def Animate(conf_func: Callable[[], TickModel]):
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
     glUniformMatrix4fv(view_loc, 1, GL_FALSE, view)
 
-    oopos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
-    o1pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
-
     animation = conf_func()
 
     animate(window, model_loc, animation)
