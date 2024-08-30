@@ -1,4 +1,4 @@
-from AnimationControl import AnimationControl
+from AnimationControl import AnimationControl, AnimationName
 import socket
 
 HOST = "127.0.0.1"
@@ -24,8 +24,10 @@ def listen(animation_control: AnimationControl):
 def control(mov: str, animation_control: AnimationControl):
     match mov:
         case "FLEXION":
-            pass
+            animation_control.change_animation(AnimationName.FLEXION)
         case "GRIP":
-            pass
+            animation_control.change_animation(AnimationName.GRIP)
         case "REST":
-            pass
+            animation_control.change_animation(AnimationName.REST)
+
+
