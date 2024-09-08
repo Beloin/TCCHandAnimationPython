@@ -4,7 +4,6 @@ import socket
 HOST = "127.0.0.1"
 PORT = 9191
 
-
 def listen(animation_control: AnimationControl):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
@@ -15,10 +14,13 @@ def listen(animation_control: AnimationControl):
             while True:
                 # TODO: Use null terminated string or fixed lenghr
                 # Input type is MOVEMENT:GRIP\0 --> Null terminated string
-                data = conn.recv(1024)
+                data = conn.recv(25)
                 if not data:
+                    print("Connection closed")
                     break
-                conn.sendall(data)
+                mov = data.decode()
+                control(mov, animation_control)
+
 
 
 def control(mov: str, animation_control: AnimationControl):

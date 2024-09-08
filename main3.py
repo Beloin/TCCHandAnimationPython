@@ -1,13 +1,12 @@
-from Animation import Animation, TickModel
 import glfw
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
 import pyrr
 from TextureLoader import load_texture
 from ObjLoader import ObjLoader
-from typing import Callable, List
+from typing import List
 
-from model import Model, create_model
+from model import Model
 
 vertex_src = """
 # version 330
@@ -69,7 +68,7 @@ def animate_models(window, model_loc, models: List[Model]):
         rot_y = pyrr.Matrix44.from_y_rotation(0.8 * glfw.get_time())
         a3dmodel = pyrr.matrix44.multiply(rot_y, model.get_pos())
 
-        # draw the character
+        # draw the chibi character
         glBindVertexArray(model.get_VAO())
         glBindTexture(GL_TEXTURE_2D, model.get_texture())
         glUniformMatrix4fv(model_loc, 1, GL_FALSE, a3dmodel)  # Or model.get_pos()
@@ -78,15 +77,13 @@ def animate_models(window, model_loc, models: List[Model]):
     glfw.swap_buffers(window)
 
 
-# TODO: Remove mode_loc
-def animate(window, model_loc, animation: TickModel):
+# TODO: Remove mode_lod
+def animate(window, model_loc, models: List[Model]):
     while not glfw.window_should_close(window):
-        model = animation.model()
-        animate_models(window, model_loc, [model])
-        animation.tick(glfw.get_time()*1000)
+        animate_models(window, model_loc, models)
 
 
-def Animate(conf_func: Callable[[], TickModel]):
+def main():
     # initializing glfw library
     if not glfw.init():
         raise Exception("glfw can not be initialized!")
@@ -107,11 +104,64 @@ def Animate(conf_func: Callable[[], TickModel]):
 
     # make the context current
     glfw.make_context_current(window)
+    chibi_indices, chibi_buffer = ObjLoader.load_model("texture_test.obj")
+    monkey_indices, monkey_buffer = ObjLoader.load_model("texture_test2.obj")
 
     shader = compileProgram(
         compileShader(vertex_src, GL_VERTEX_SHADER),
         compileShader(fragment_src, GL_FRAGMENT_SHADER),
     )
+
+    VAO = glGenVertexArrays(2)
+    VBO = glGenBuffers(2)
+
+    # Chibi VAO
+    glBindVertexArray(VAO[0])
+    # Chibi Vertex Buffer Object
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[0])
+    glBufferData(GL_ARRAY_BUFFER, chibi_buffer.nbytes, chibi_buffer, GL_STATIC_DRAW)
+
+    # chibi vertices
+    glEnableVertexAttribArray(0)
+    glVertexAttribPointer(
+        0, 3, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(0)
+    )
+    # chibi textures
+    glEnableVertexAttribArray(1)
+    glVertexAttribPointer(
+        1, 2, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(12)
+    )
+    # chibi normals
+    glVertexAttribPointer(
+        2, 3, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(20)
+    )
+    glEnableVertexAttribArray(2)
+
+    # Monkey VAO
+    glBindVertexArray(VAO[1])
+    # Monkey Vertex Buffer Object
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[1])
+    glBufferData(GL_ARRAY_BUFFER, monkey_buffer.nbytes, monkey_buffer, GL_STATIC_DRAW)
+
+    # monkey vertices
+    glEnableVertexAttribArray(0)
+    glVertexAttribPointer(
+        0, 3, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctypes.c_void_p(0)
+    )
+    # monkey textures
+    glEnableVertexAttribArray(1)
+    glVertexAttribPointer(
+        1, 2, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctypes.c_void_p(12)
+    )
+    # monkey normals
+    glVertexAttribPointer(
+        2, 3, GL_FLOAT, GL_FALSE, monkey_buffer.itemsize * 8, ctypes.c_void_p(20)
+    )
+    glEnableVertexAttribArray(2)
+
+    textures = glGenTextures(2)
+    load_texture("texture_test.png", textures[0])
+    load_texture("texture_test.png", textures[1])
 
     glUseProgram(shader)
     glClearColor(0, 0.1, 0.1, 1)
@@ -123,6 +173,8 @@ def Animate(conf_func: Callable[[], TickModel]):
     projection = pyrr.matrix44.create_perspective_projection_matrix(
         45, 1280 / 720, 0.1, 100
     )
+    chibi_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
+    monkey_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
 
     # eye, target, up
     view = pyrr.matrix44.create_look_at(
@@ -137,7 +189,15 @@ def Animate(conf_func: Callable[[], TickModel]):
     glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
     glUniformMatrix4fv(view_loc, 1, GL_FALSE, view)
 
-    animation = conf_func()
+    model_01 = Model(
+        chibi_indices, chibi_buffer, textures[0], chibi_pos, VAO[0], VBO[0]
+    )
+    model_02 = Model(
+        monkey_indices, monkey_buffer, textures[1], monkey_pos, VAO[1], VBO[1]
+    )
 
-    animate(window, model_loc, animation)
+    animate(window, model_loc, [model_01, model_02])
     glfw.terminate()
+
+
+main()

@@ -7,7 +7,7 @@ import pyrr
 from Animation import Animation, TickModel
 from model import Model
 
-ANIMATION_THRESHOLD = 99
+ANIMATION_THRESHOLD = 95
 
 
 def grip():
@@ -73,6 +73,8 @@ class AnimationControl(TickModel):
         self._animation_needs_change = True
 
     def _internal_animation_change(self):
+        # TODO: Somehow we are reseting animation and staying in
+        # end of it, not the beggining
         if self._animation_needs_change:
             if self._current_animation.animation_percentage() >= ANIMATION_THRESHOLD:
                 self._current_animation.reset()
