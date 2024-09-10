@@ -54,7 +54,7 @@ class Animation(TickModel):
             # Changes animation order
             if self._last_index > x:
                 self._order = 1 if self._order == -1 else -1
-                print("Reverting order: ", self._order)
+                # print("Reverting order: ", self._order)
 
             self._last_index = self._current_index
             self._current_index = math.floor(x)
@@ -63,12 +63,12 @@ class Animation(TickModel):
         new_index = self._current_index + 1
         if self._last_index > new_index:
             self._order = 1 if self._order == -1 else -1
-            print("Reverting order: ", self._order)
+            # print("Reverting order: ", self._order)
 
         self._current_index = new_index
 
     def get_current_model(self):
-        print("Current Frame: ", self._current_index + 1)
+        # print("Current Frame: ", self._current_index + 1)
         index = self._current_index * self._order
         if self._order == -1 and index == 0:
             index = self._frames - 1

@@ -12,7 +12,7 @@ def configure_controller():
     return controller
 
 def main():
-    #thd.start()
+    thd.start()
     Animate(configure_controller)
 
 if __name__ == "__main__":
