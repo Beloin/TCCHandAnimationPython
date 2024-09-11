@@ -27,11 +27,14 @@ def listen(animation_control: AnimationControl):
 
 
 def control(mov: str, animation_control: AnimationControl):
-    print("Got:", mov)
-    match mov:
-        case "FLEXION":
-            animation_control.change_animation(AnimationName.FLEXION)
-        case "GRIP":
-            animation_control.change_animation(AnimationName.GRIP)
-        case "REST":
-            animation_control.change_animation(AnimationName.REST)
+    mov = str(mov.strip())
+    print('Got: "', mov, '" type=', type(mov), sep="")
+    if "FLEXION" == mov:
+        print("FLEXION")
+        animation_control.change_animation(AnimationName.FLEXION)
+    elif "GRIP" == mov:
+        print("GRIP")
+        animation_control.change_animation(AnimationName.GRIP)
+    elif "REST" == mov:
+        print("REST")
+        animation_control.change_animation(AnimationName.REST)

@@ -62,6 +62,7 @@ class AnimationControl(TickModel):
         return self._current_animation.model()
 
     def change_animation(self, animation: AnimationName):
+        print("Changing animation:", animation)
         match animation:
             case AnimationName.FLEXION:
                 self._next_animation = self._flexion

@@ -1,6 +1,5 @@
 import socket
 
-
 def sanitize(v: str):
     for _ in range(25 - len(v)):
         v += "\0"
